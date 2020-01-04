@@ -11,7 +11,9 @@ if __name__ == '__main__':
             add_city(i)
         add_roads(networkInfo)
         mst = kruskal()
-        print(breadth_first(mst, destination))
+        path = breadth_first(mst, destination)
+        max_altitude = get_max_altitude(mst, path)
+        print("best path: ", path, "\npath's altitude: ", max_altitude)
         end = time.time()
-        print( "elapsed: ", end - start, "\n\n\n")
+        print("elapsed: ", end - start, "\n\n\n")
 

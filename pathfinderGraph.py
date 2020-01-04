@@ -13,6 +13,14 @@ PARENT = dict()
 RANK = dict()
 
 
+def get_max_altitude(mst, path):
+    """retrieves the highest altitude in the path"""
+    mst.sort(key=lambda x: x[2], reverse=True)
+    for road in mst:
+        if road[0] in path and road[1] in path:
+            return road[2]
+
+
 def create_adjacency_list(roads):
     """
     To make path finding easier this function gets the minimum spanning tree
