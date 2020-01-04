@@ -1,6 +1,7 @@
 """
 This program creates a network out of a formatted text file and finds the path of least resistance
-(lowest weight edges). To achieve this it uses Kruskal's minimum spanning tree algorithm.
+(lowest weight edges). To achieve this it uses Kruskal's minimum spanning tree algorithm together with
+a breadth first search algorithm.
 
 NETWORK : contains the nodes or "cities" as well as the edges (roads).
 PARENT : contains each node's parent node. Used for checking for cycles in the network.
