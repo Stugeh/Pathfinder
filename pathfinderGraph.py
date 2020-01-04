@@ -13,6 +13,45 @@ PARENT = dict()
 RANK = dict()
 
 
+def create_adjacency_list(roads):
+    """
+    To make path finding easier this function gets the minimum spanning tree
+    as an input and returns an an adjacency list.
+    """
+    adj_list = {}
+    for road in roads:
+        adj_list[road[0]] = []   # initializing the keys of the adjacency list
+        adj_list[road[1]] = []
+    for road in roads:          # adds all the adjacency's for each key
+        adj_list[road[0]].append(road[1])
+        adj_list[road[1]].append(road[0])
+    return adj_list
+
+
+def breadth_first(mst, destination):
+    """
+    This function gets as an input the minimum spanning tree constructed earlier,
+    as well as the destination it we want to get to. It finds the path between
+    city 1 and the destination by utilising the breadth first search algorithm.
+    """
+    adj_list = create_adjacency_list(mst)    # returns a reformatted version of the MST
+    explored = []
+    queue = [[1]]
+    while queue:
+        path = queue.pop(0)
+        city = path[-1]
+        if city not in explored:
+            neighbours = adj_list[city]      # gets neighbouring nodes for each city
+            for neighbour in neighbours:    # and loops through them while forming
+                new_path = list(path)       # paths for each of them
+                new_path.append(neighbour)
+                queue.append(new_path)
+                if neighbour == destination:    # When the algorithm stumbles upon the
+                    return new_path             # destination city it returns the shortest path
+            explored.append(city)               
+    return "There is no path to city: ", destination
+
+
 def make_set(city):
     """This function is used to initialize each city's values in the PARENT and RANK dictionaries"""
     PARENT[city] = city
@@ -80,20 +119,20 @@ def add_roads(roads):
 
 def read_network_file(path):
     """
-    Reads a formatted .txt file, appends it to a list called networkInfo, gets the number of cities and roads as
+    Reads a formatted .txt file, appends it to a list called network_info, gets the number of cities and roads as
     well as the destination city from the first and last lines of the document respectively. After this it
     slices them away and returns the remaining list to create the network itself.
     """
-    networkInfo = []    # useful info about the network
+    network_info = []    # useful info about the network
     if path.endswith(".txt"):
         file = open(path, "r")
         for line in file:
             line = line.rstrip()    # strips trailing newlines
-            networkInfo.append(line.split(' '))     # splits the line into chunks,
-        cities = int(networkInfo[0][0])             # so it can add it into networkInfo for later access.
-        roads = int(networkInfo[0][1])
-        destination = int(networkInfo[roads + 1][0])
-        networkInfo = networkInfo[1:-1]                 # Now that the useful info has been extracted we can slice it
-        return cities, roads, destination, networkInfo  # off only the roads remain.
+            network_info.append(line.split(' '))     # splits the line into chunks,
+        cities = int(network_info[0][0])             # so it can add it into network_info for later access.
+        roads = int(network_info[0][1])
+        destination = int(network_info[roads + 1][0])
+        network_info = network_info[1:-1]                 # Now that the useful info has been extracted we can slice it
+        return cities, roads, destination, network_info  # off only the roads remain.
     else:
         print("Not a .txt file")
